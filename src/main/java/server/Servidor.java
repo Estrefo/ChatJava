@@ -3,36 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTextArea;
 
 /**
  *
  * @author User_
  */
-public class Cliente extends javax.swing.JFrame {
+public class Servidor extends javax.swing.JFrame {
 
     /**
-     * Creates new form Cliente
+     * Creates new form Servidor
      */
-    public Cliente() throws Exception {
+    public Servidor() {
         initComponents();
-        conectar();
-    }
-
-    private void setMensaje(String mensaje) {
-
-        jTextAreaRecibido.setText(mensaje);
     }
 
     /**
@@ -44,8 +35,6 @@ public class Cliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaRecibido = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaEnviado = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
@@ -54,13 +43,10 @@ public class Cliente extends javax.swing.JFrame {
         jTextAreaEscribir = new javax.swing.JTextArea();
         jButtonMultimedia = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextAreaRecibido = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(51, 255, 204));
-
-        jTextAreaRecibido.setColumns(20);
-        jTextAreaRecibido.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaRecibido);
 
         jTextAreaEnviado.setColumns(20);
         jTextAreaEnviado.setRows(5);
@@ -68,7 +54,7 @@ public class Cliente extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 255, 51));
-        jLabel1.setText("CHAT CLIENTE");
+        jLabel1.setText("CHAT SERVIDOR");
 
         jButtonEnviar.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jButtonEnviar.setText("Enviar");
@@ -87,6 +73,10 @@ public class Cliente extends javax.swing.JFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 10));
+
+        jTextAreaRecibido.setColumns(20);
+        jTextAreaRecibido.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaRecibido);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,7 +101,7 @@ public class Cliente extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(130, 130, 130))
+                .addGap(111, 111, 111))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,29 +109,29 @@ public class Cliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addComponent(jSeparator1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonMultimedia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(112, 112, 112))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarActionPerformed
+        // TODO add your handling code here:
         try {
         // Obtener el mensaje del área de texto
         String mensajeEnviado = jTextAreaEscribir.getText();
 
         // Enviar mensaje al cliente
-        enviarMensajeAlServidor(mensajeEnviado);
-        
+        enviarMensajeAlCliente(mensajeEnviado);
 
         // Limpiar el área de texto después de enviar el mensaje
         jTextAreaEnviado.setText(mensajeEnviado);
@@ -149,13 +139,12 @@ public class Cliente extends javax.swing.JFrame {
     } catch (Exception ex) {
         ex.printStackTrace();
     }
-
     }//GEN-LAST:event_jButtonEnviarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -169,79 +158,77 @@ public class Cliente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            try {
-                new Cliente().setVisible(true);
-            } catch (Exception ex) {
-                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            public void run() {
+                new Servidor().setVisible(true);
             }
-        }
-    });
-
-    }
-
-    private void enviarMensajeAlServidor(String mensaje) throws Exception {
-        DatagramSocket clientSocket = new DatagramSocket();
-        byte[] enviados = new byte[1024];
-
-        // DATOS DEL SERVIDOR al que enviar mensaje
-        InetAddress IPServidor = InetAddress.getLocalHost(); // localhost
-        int puerto = 9876; // puerto por el que escucha
-
-        enviados = mensaje.getBytes();
-
-        // ENVIANDO DATAGRAMA AL SERVIDOR
-        DatagramPacket envio = new DatagramPacket(enviados, enviados.length, IPServidor, puerto);
-        clientSocket.send(envio);
-
-        // Cerrar socket después de enviar el mensaje
-        clientSocket.close();
+        });
     }
 
     private void conectar() throws Exception {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        DatagramSocket clientSocket = new DatagramSocket();
-        byte[] enviados = new byte[1024];
+        //Puerto por el que escucha el servidor: 9876
+        DatagramSocket serverSocket = new DatagramSocket(9876);
         byte[] recibidos = new byte[1024];
-        // DATOS DEL SERVIDOR al que enviar mensaje
-        InetAddress IPServidor = InetAddress.getLocalHost();// localhost
-        int puerto = 9876; // puerto por el que escucha
-        // INTRODUCIR DATOS POR TECLADO
-        System.out.print("Introduce mensaje: ");
-        String cadena = in.readLine();
-        enviados = cadena.getBytes();
-        // ENVIANDO DATAGRAMA AL SERVIDOR
-        System.out.println("Enviando " + enviados.length + " bytes al servidor.");
-        DatagramPacket envio = new DatagramPacket(enviados, enviados.length, IPServidor, puerto);
-        clientSocket.send(envio);
-        // RECIBIENDO DATAGRAMA DEL SERVIDOR
-        DatagramPacket recibo = new DatagramPacket(recibidos, recibidos.length);
-        System.out.println("Esperando datagrama....");
-        clientSocket.receive(recibo);
-        String mayuscula = new String(recibo.getData());
-        // OBTENIENDO INFORMACIÓN DEL DATAGRAMA
-        InetAddress IPOrigen = recibo.getAddress();
-        int puertoOrigen = recibo.getPort();
-        System.out.println("\tProcedente de: " + IPOrigen + ":" + puertoOrigen);
-        setMensaje(mayuscula);
-        //cerrar socket
-        clientSocket.close();
+
+        while (true) {
+            System.out.println("Esperando datagrama.....");
+
+            // RECIBO DATAGRAMA
+            DatagramPacket paqRecibido = new DatagramPacket(recibidos, recibidos.length);
+            serverSocket.receive(paqRecibido);
+
+            // DIRECCION ORIGEN
+            InetAddress IPOrigen = paqRecibido.getAddress();
+            int puerto = paqRecibido.getPort();
+            System.out.println("\tOrigen: " + IPOrigen + ":" + puerto);
+
+            // OBTENER MENSAJE RECIBIDO
+            String mensajeRecibido = new String(paqRecibido.getData()).trim();
+
+            // MOSTRAR MENSAJE EN jTextAreaRecibido
+            jTextAreaRecibido.append(mensajeRecibido + "\n");
+
+            // Condición de finalización
+            if (mensajeRecibido.equals("*")) {
+                break;
+            }
+        }
+
+        // Cerrar socket después de recibir mensajes
+        serverSocket.close();
+        System.out.println("Socket cerrado...");
 
     }
 
+    private void enviarMensajeAlCliente(String mensaje) throws Exception {
+        DatagramSocket serverSocket = new DatagramSocket(9876);
+        byte[] enviados = new byte[1024];
+
+        // DATOS DEL CLIENTE al que enviar mensaje
+        InetAddress IPOrigen = InetAddress.getLocalHost(); // localhost
+        int puerto = 1234; // puerto por el que escucha el cliente
+
+        enviados = mensaje.getBytes();
+
+        // ENVIANDO DATAGRAMA AL CLIENTE
+        DatagramPacket envio = new DatagramPacket(enviados, enviados.length, IPOrigen, puerto);
+        serverSocket.send(envio);
+
+        // Cerrar socket después de enviar el mensaje
+        serverSocket.close();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEnviar;
